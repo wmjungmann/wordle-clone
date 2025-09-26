@@ -1,9 +1,22 @@
-import Image from "next/image";
-import CharInput from "./components/char-input";
+"use client";
+
+import { useState } from "react";
+import Row from "./components/row";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
 export default function Home() {
+  
+  const [activeRow, setActiveRow] = useState<number>(0);
+
+  const GuessWord = () => {
+    console.log("Word guessed");
+    handleRowUpdate(1);
+  };
+
+  const handleRowUpdate = (rowIndex: number) => {
+    setActiveRow(rowIndex);
+  };
 
   return (
     <div className="font-sans flex flex-col min-h-screen">
@@ -20,15 +33,20 @@ export default function Home() {
         
         <form className="flex flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center">
-            <CharInput />
-            <CharInput />
-            <CharInput />
-            <CharInput />
-            <CharInput />
-            <CharInput />
+            {
+              Array.from({ length: 6 }).map((_, i) => (
+                <Row key = {i} disabled={i !== activeRow} />
+              ))
+            }
           </div>
           <div className="h-15 w-30">
-            <button type="submit" className="h-full w-full border rounded-sm bg-stone-300 font-bold hover:cursor-pointer">Submit</button>
+            <button 
+              type="button" 
+              className="h-full w-full border rounded-sm bg-stone-300 font-bold hover:cursor-pointer" 
+              onClick={GuessWord}
+            >
+              Submit
+            </button>
           </div>
         </form>
 
